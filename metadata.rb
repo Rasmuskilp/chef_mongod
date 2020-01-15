@@ -18,3 +18,9 @@ chef_version '>= 14.0'
 # a Supermarket.
 #
 # source_url 'https://github.com/<insert_org_here>/mongod'
+depends 'nodejs', '~> 5.0.0'
+depends 'apt'
+#depends 'poise-python', '~> 1.7.0'
+depends 'yum'
+depends 'sc-mongodb', '~> 1.2.0'  #node['mongodb']['4.03']
+#depends 'mongodb'
