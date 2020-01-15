@@ -5,10 +5,9 @@
 # Copyright:: 2020, The Authors, All Rights Reserved.
 
 require 'spec_helper'
-require 'chefspec/Policyfile.rb'
+require 'chefspec/policyfile'
 #require 'chefspec/metadata'
-#require 'policyfile.rb'
-#require 'metadata.rb'
+
 
 describe 'mongod::default' do
   context 'When all attributes are default, on Ubuntu 16.04' do
