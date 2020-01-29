@@ -14,15 +14,26 @@ include_recipe  'yum'
 # mongodb_instance 'mongodb' do
 #   package_version  node['mongodb']['package_version'] == '4.0.3'
 # end
-apt_repository 'mongodb' do
-  uri 'http://repo.mongodb.org/apt/ubuntu/dists/xenial/mongodb-org/3.2/'
-  components ['main']
-  distribution 'xenial'
-  key '24F3C978'
-  key_server 'hkp://keyserver.ubuntu.com:80'
-  action :add
-  deb_src true
+include_recipe 'sc-mongodb'
 
+# apt_repository 'mongodb' do
+#   uri 'http://repo.mongodb.org/apt/ubuntu/dists/xenial/mongodb-org/3.2/'
+#   components ['main']
+#   distribution 'xenial'
+#   key '24F3C978'
+#   key_server 'hkp://keyserver.ubuntu.com:80'
+#   action :add
+#   deb_src true
+template '/etc/mongod.conf' do
+  source 'mongod.conf.erb'
+  variables bindIp: node['mongodb']['config']['mongod']['net']['bindIp'],
+  port: node['mongodb']['config']['mongod']['net']['port']
+  notifies :restart, 'service[mongod]'
+end
+#resource link
+template "/lib/systemd/system/mongod.service" do
+ source "mongod.service.erb"
+  notifies :restart, 'service[mongod]'
 end
 apt_package 'mongodb-org' do
   action :install
