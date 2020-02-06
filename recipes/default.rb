@@ -38,6 +38,17 @@ end
 apt_package 'mongodb-org' do
   action :install
 end
+template '/opt/mongo/mongo-keyfile' do
+  source 'mongo-keyfile.erb'
+  mode '0400'
+  notifies :run, 'execute[restart_mongod.service]', :immediately
+end
+bash 'chown keyfile' do
+  user 'root'
+  code <<-EOH
+  sudo chown mongodb:mongodb /opt/mongo/mongo-keyfile
+  EOH
+end
 service 'mongod' do
   action :start
 end
